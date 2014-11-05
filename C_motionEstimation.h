@@ -32,6 +32,9 @@ private:
     C_imgMatrix<double>* imDY;
     C_imgMatrix<double>* imDT;
 
+    C_imgMatrix<double>* vectXMean;
+    C_imgMatrix<double>* vectYMean;
+
     //methods that compute the derivatives
     void derivativeX(void);
     void derivativeY(void);
@@ -42,11 +45,17 @@ private:
     double computeIterationY(double alpha){return 0.0;}
 
     //might be interesting to have those two...
-    double computeAverageX(unsigned short i, unsigned short j){return 0.0;}
-    double computeAverageY(unsigned short i, unsigned short j){return 0.0;}
+    double computeAverageX(unsigned short i, unsigned short j);
+    double computeAverageY(unsigned short i, unsigned short j);
+    void computeAverages(void);
 
     //init vector field: choose the right method
-    bool initOpticalFlow(unsigned short METHOD){return false;}
+    bool initOpticalFlow(unsigned short METHOD)
+    {
+        (*vectX) = 0.0;
+        (*vectY) = 0.0;
+        return false;
+    }
 
 };
 
