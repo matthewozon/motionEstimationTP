@@ -15,31 +15,54 @@ int main(int argc, char *argv[])
 
     std::cout << "Input files: " << file1 << " " << file2 << std::endl;
 
-    //display images
-    C_imgMatrix<double> IM1(file1); //load file1
-    C_imgMatrix<double> IM2(file2); //load file2
-
-    IM1.display(NO_NORMALIZATION); //display image 1
-    IM2.display(NO_NORMALIZATION); //display image 2
-
 
     //It's up to you!
     C_motionEstimation F(argv[1],argv[2]);
 
+    ///run estimation alpha=0.05
+    F.computeMotionField(0.05,500);
 
-    F.initOpticalFlow(0);
+    //save vector field
+    F.saveVectorField("vectXsmall","vectYsmall");
+
+    //display images
+    F.image1->display(NORMALIZE);
+    F.image2->display(NORMALIZE);
+
+    //display vector field
+    F.vectX->display(NORMALIZE);
+    F.vectY->display(NORMALIZE);
+
+    ///run estimation alpha=1
+    F.computeMotionField(1.0,500);
+
+    //save vector field
+    F.saveVectorField("vectX","vectY");
+
+    //display images
+    F.image1->display(NORMALIZE);
+    F.image2->display(NORMALIZE);
+
+    //display vector field
+    F.vectX->display(NORMALIZE);
+    F.vectY->display(NORMALIZE);
 
 
-    F.imDX->display(NORMALIZE);
+    ///run estimation alpha=20
+    F.computeMotionField(20.0,500);
 
-    F.imDY->display(NORMALIZE);
-    F.imDT->display(NORMALIZE);
+    //save vector field
+    F.saveVectorField("vectXlarge","vectYlarge");
 
-    F.computeMotionField(1.0, 50);
+    //display images
+    F.image1->display(NORMALIZE);
+    F.image2->display(NORMALIZE);
 
-    //F.saveVectorField("fileX","fileY");
+    //display vector field
+    F.vectX->display(NORMALIZE);
+    F.vectY->display(NORMALIZE);
 
-    //display results...
+
     return 0;
 }
 

@@ -28,7 +28,7 @@ public:
     //tool to save the vector field (may be useful to export result so that you can plot it using octave)
     bool saveVectorField(std::string fileNameVectX, std::string fileNameVectY);
 
-//private: //uncomment after test
+private:
     //first order derivatives of the images
     C_imgMatrix<double>* imDX;
     C_imgMatrix<double>* imDY;
