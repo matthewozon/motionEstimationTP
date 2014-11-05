@@ -24,6 +24,8 @@ int main(int argc, char *argv[])
 
 
     //It's up to you!
+    C_motionEstimation F("file1","file2");
+    F.saveVectorField("fileX","fileY");
 
     //display results...
     return 0;

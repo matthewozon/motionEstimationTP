@@ -5,7 +5,7 @@ project(motionEstimation)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
 #Inclusion de Boost
-include_directories(. /usr/include)
+include_directories(. /usr/include /share/users/matthew.ozon/home/Documents/CIMG/CImg)
 link_directories(. /usr/lib)
 
 #Configuration de l'exécutable
@@ -22,7 +22,7 @@ add_executable(
 #Configuration de l'édition de liens
 target_link_libraries(
         motionEstimation
-        gif # for gif images
+        #gif # for gif images
         tiff #for tiff images
         png #read png images
         X11 #needed by png (different on windows)

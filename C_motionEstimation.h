@@ -3,11 +3,14 @@
 
 #include <C_imgMatrix.h>
 
+#include <fstream>
+
 class C_motionEstimation
 {
 public:
     //ctor: load two images (frames of a movie)
     C_motionEstimation(std::string fileNameFrame1, std::string fileNameFrame2);
+    virtual ~C_motionEstimation();
 
     //method that computes all iterations of Horn & Schunck method: stores the result in vectX & vectY
     bool computeMotionField(double alpha, unsigned long nbIteration){return false;}
@@ -21,7 +24,7 @@ public:
     C_imgMatrix<double>* vectY;
 
     //tool to save the vector field (may be useful to export result so that you can plot it using octave)
-    bool saveVectorField(std::string fileNameVectX, std::string fileNameVectY){return true;}
+    bool saveVectorField(std::string fileNameVectX, std::string fileNameVectY);
 
 private:
     //first order derivatives of the images
