@@ -51,7 +51,7 @@ bool C_motionEstimation::saveVectorField(std::string fileNameVectX, std::string 
 
 
     std::ofstream myfile2;
-    myfile2.open (fileNameVectX.data(), std::ios::out );
+    myfile2.open (fileNameVectY.data(), std::ios::out );
     if(myfile2.is_open())
     {
         for(unsigned short l=0 ; l<vectY->getNbRow() ; l++)
