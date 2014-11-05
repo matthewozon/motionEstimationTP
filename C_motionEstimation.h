@@ -1,7 +1,7 @@
 #ifndef C_MOTIONESTIMATION_H
 #define C_MOTIONESTIMATION_H
 
-#include <C_imgPng.h>
+#include <C_imgMatrix.h>
 
 class C_motionEstimation
 {
@@ -13,26 +13,26 @@ public:
     bool computeMotionField(double alpha, unsigned long nbIteration){return false;}
 
     //the two frames
-    C_imgPng<double>* image1;
-    C_imgPng<double>* image2;
+    C_imgMatrix<double>* image1;
+    C_imgMatrix<double>* image2;
 
     //the vector field: flow vector
-    C_imgPng<double>* vectX;
-    C_imgPng<double>* vectY;
+    C_imgMatrix<double>* vectX;
+    C_imgMatrix<double>* vectY;
 
     //tool to save the vector field (may be useful to export result so that you can plot it using octave)
     bool saveVectorField(std::string fileNameVectX, std::string fileNameVectY){return true;}
 
 private:
     //first order derivatives of the images
-    C_imgPng<double>* imDX;
-    C_imgPng<double>* imDY;
-    C_imgPng<double>* imDT;
+    C_imgMatrix<double>* imDX;
+    C_imgMatrix<double>* imDY;
+    C_imgMatrix<double>* imDT;
 
     //methods that compute the derivatives
-    C_imgPng<double>* derivativeX(C_imgPng<double>* im){return NULL;}
-    C_imgPng<double>* derivativeY(C_imgPng<double>* im){return NULL;}
-    C_imgPng<double>* derivativeT(C_imgPng<double>* imT, C_imgPng<double>* imTDT){return NULL;}
+    C_imgMatrix<double>* derivativeX(C_imgMatrix<double>* im){return NULL;}
+    C_imgMatrix<double>* derivativeY(C_imgMatrix<double>* im){return NULL;}
+    C_imgMatrix<double>* derivativeT(C_imgMatrix<double>* imT, C_imgMatrix<double>* imTDT){return NULL;}
 
     //compute one iteration of Horn & Schunck method: one for each component
     double computeIterationX(double alpha){return 0.0;}

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <sstream>
 
-#include <C_imgPng.h>
+#include <C_imgMatrix.h>
 #include <C_motionEstimation.h>
 
 
@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     std::cout << "Input files: " << file1 << " " << file2 << std::endl;
 
     //display images
-    C_imgPng<double> IM1(file1); //load file1
-    C_imgPng<double> IM2(file2); //load file2
+    C_imgMatrix<double> IM1(file1); //load file1
+    C_imgMatrix<double> IM2(file2); //load file2
 
     IM1.display(NO_NORMALIZATION); //display image 1
     IM2.display(NO_NORMALIZATION); //display image 2
@@ -42,32 +42,32 @@ int main(int argc, char *argv[])
     A  = 5;
     A.show();
 
-    C_imgPng<float> B("00000001.png");
+    C_imgMatrix<float> B("00000001.png");
     B.display(NO_NORMALIZATION);
     std::cout << B(10,10) << std::endl;
 
-    C_imgPng<float> C(B);
+    C_imgMatrix<float> C(B);
     C.display(NO_NORMALIZATION);
 
     A.resize(200,300);
     A = (float) 128;
-    C_imgPng<float> D(A);
+    C_imgMatrix<float> D(A);
     D.display(NO_NORMALIZATION);
 
-    C_imgPng<float> E("00000002.png");
+    C_imgMatrix<float> E("00000002.png");
     E.display(NO_NORMALIZATION);
 
-    C_imgPng<float> F(E.getNbRow(), E.getNbColumn());
+    C_imgMatrix<float> F(E.getNbRow(), E.getNbColumn());
     F = B-E;
     F.display(NORMALIZE);
 
     C_matrix<float> K = F.m_abs();
     C_matrix<float> KK = K.dotProduct(K);
     //KK.show();
-    C_imgPng<float> GG(K);
+    C_imgMatrix<float> GG(K);
     GG.display(NORMALIZE);
 
-    C_imgPng<float> GL(KK);
+    C_imgMatrix<float> GL(KK);
     GL.display(NORMALIZE);
 
 

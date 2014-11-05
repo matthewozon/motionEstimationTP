@@ -22,6 +22,8 @@ add_executable(
 #Configuration de l'édition de liens
 target_link_libraries(
         motionEstimation
+        gif # for gif images
+        tiff #for tiff images
         png #read png images
         X11 #needed by png (different on windows)
         pthread #needed by png (different on windows)
