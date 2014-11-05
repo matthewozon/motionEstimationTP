@@ -57,10 +57,42 @@ void C_motionEstimation::derivativeX(void)
     *imDX = 0.0;
     for(unsigned short i=0 ; i<image1->getNbRow()-1 ; i++)
     {
-        for(unsigned short j=j ; j<image1->getNbRow()-1 ; j++)
+        for(unsigned short j=0 ; j<image1->getNbRow()-1 ; j++)
         {
             (*imDX)(i,j) = 0.25*((*image1)(i,j+1)-(*image1)(i,j) + (*image1)(i+1,j+1)-(*image1)(i+1,j) + \
                     (*image2)(i,j+1)-(*image2)(i,j) + (*image2)(i+1,j+1)-(*image2)(i+1,j));
+        }
+    }
+    return;
+}
+
+void C_motionEstimation::derivativeY(void)
+{
+    //allocate the container (should check first if pointer is null)
+    imDX = new C_imgMatrix<double>(image1->getNbRow(), image1->getNbColumn());
+    *imDX = 0.0;
+    for(unsigned short i=0 ; i<image1->getNbRow()-1 ; i++)
+    {
+        for(unsigned short j=0 ; j<image1->getNbRow()-1 ; j++)
+        {
+            (*imDX)(i,j) = 0.25*((*image1)(i+1,j)-(*image1)(i,j) + (*image1)(i+1,j+1)-(*image1)(i,j+1) + \
+                    (*image2)(i+1,j)-(*image2)(i,j) + (*image2)(i+1,j+1)-(*image2)(i,j+1));
+        }
+    }
+    return;
+}
+
+void C_motionEstimation::derivativeT(void)
+{
+    //allocate the container (should check first if pointer is null)
+    imDX = new C_imgMatrix<double>(image1->getNbRow(), image1->getNbColumn());
+    *imDX = 0.0;
+    for(unsigned short i=0 ; i<image1->getNbRow()-1 ; i++)
+    {
+        for(unsigned short j=0 ; j<image1->getNbRow()-1 ; j++)
+        {
+            (*imDX)(i,j) = 0.25*((*image2)(i,j)-(*image1)(i,j) + (*image2)(i+1,j)-(*image1)(i+1,j) + \
+                    (*image2)(i,j+1)-(*image1)(i,j+1) + (*image2)(i+1,j+1)-(*image1)(i+1,j+1));
         }
     }
     return;

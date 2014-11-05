@@ -34,8 +34,8 @@ private:
 
     //methods that compute the derivatives
     void derivativeX(void);
-    C_imgMatrix<double>* derivativeY(C_imgMatrix<double>* im){return NULL;}
-    C_imgMatrix<double>* derivativeT(C_imgMatrix<double>* imT, C_imgMatrix<double>* imTDT){return NULL;}
+    void derivativeY(void);
+    void derivativeT(void);
 
     //compute one iteration of Horn & Schunck method: one for each component
     double computeIterationX(double alpha){return 0.0;}
