@@ -5,6 +5,8 @@
 
 #include <fstream>
 
+#define SQR(x) ((x)*(x))
+
 class C_motionEstimation
 {
 public:
@@ -13,7 +15,7 @@ public:
     virtual ~C_motionEstimation();
 
     //method that computes all iterations of Horn & Schunck method: stores the result in vectX & vectY
-    bool computeMotionField(double alpha, unsigned long nbIteration){return false;}
+    bool computeMotionField(double alpha, unsigned long nbIteration);
 
     //the two frames
     C_imgMatrix<double>* image1;
@@ -26,7 +28,7 @@ public:
     //tool to save the vector field (may be useful to export result so that you can plot it using octave)
     bool saveVectorField(std::string fileNameVectX, std::string fileNameVectY);
 
-private:
+//private: //uncomment after test
     //first order derivatives of the images
     C_imgMatrix<double>* imDX;
     C_imgMatrix<double>* imDY;
@@ -41,8 +43,7 @@ private:
     void derivativeT(void);
 
     //compute one iteration of Horn & Schunck method: one for each component
-    double computeIterationX(double alpha){return 0.0;}
-    double computeIterationY(double alpha){return 0.0;}
+    void computeIteration(double alpha);
 
     //might be interesting to have those two...
     double computeAverageX(unsigned short i, unsigned short j);
@@ -50,12 +51,7 @@ private:
     void computeAverages(void);
 
     //init vector field: choose the right method
-    bool initOpticalFlow(unsigned short METHOD)
-    {
-        (*vectX) = 0.0;
-        (*vectY) = 0.0;
-        return false;
-    }
+    bool initOpticalFlow(unsigned short METHOD);
 
 };
 

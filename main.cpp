@@ -24,8 +24,20 @@ int main(int argc, char *argv[])
 
 
     //It's up to you!
-    C_motionEstimation F("file1","file2");
-    F.saveVectorField("fileX","fileY");
+    C_motionEstimation F(argv[1],argv[2]);
+
+
+    F.initOpticalFlow(0);
+
+
+    F.imDX->display(NORMALIZE);
+
+    F.imDY->display(NORMALIZE);
+    F.imDT->display(NORMALIZE);
+
+    F.computeMotionField(1.0, 50);
+
+    //F.saveVectorField("fileX","fileY");
 
     //display results...
     return 0;

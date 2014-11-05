@@ -74,7 +74,7 @@ void C_motionEstimation::derivativeX(void)
     *imDX = 0.0;
     for(unsigned short i=0 ; i<image1->getNbRow()-1 ; i++)
     {
-        for(unsigned short j=0 ; j<image1->getNbRow()-1 ; j++)
+        for(unsigned short j=0 ; j<image1->getNbColumn()-1 ; j++)
         {
             (*imDX)(i,j) = 0.25*((*image1)(i,j+1)-(*image1)(i,j) + (*image1)(i+1,j+1)-(*image1)(i+1,j) + \
                     (*image2)(i,j+1)-(*image2)(i,j) + (*image2)(i+1,j+1)-(*image2)(i+1,j));
@@ -86,13 +86,13 @@ void C_motionEstimation::derivativeX(void)
 void C_motionEstimation::derivativeY(void)
 {
     //allocate the container (should check first if pointer is null)
-    imDX = new C_imgMatrix<double>(image1->getNbRow(), image1->getNbColumn());
-    *imDX = 0.0;
+    imDY = new C_imgMatrix<double>(image1->getNbRow(), image1->getNbColumn());
+    *imDY = 0.0;
     for(unsigned short i=0 ; i<image1->getNbRow()-1 ; i++)
     {
-        for(unsigned short j=0 ; j<image1->getNbRow()-1 ; j++)
+        for(unsigned short j=0 ; j<image1->getNbColumn()-1 ; j++)
         {
-            (*imDX)(i,j) = 0.25*((*image1)(i+1,j)-(*image1)(i,j) + (*image1)(i+1,j+1)-(*image1)(i,j+1) + \
+            (*imDY)(i,j) = 0.25*((*image1)(i+1,j)-(*image1)(i,j) + (*image1)(i+1,j+1)-(*image1)(i,j+1) + \
                     (*image2)(i+1,j)-(*image2)(i,j) + (*image2)(i+1,j+1)-(*image2)(i,j+1));
         }
     }
@@ -102,13 +102,13 @@ void C_motionEstimation::derivativeY(void)
 void C_motionEstimation::derivativeT(void)
 {
     //allocate the container (should check first if pointer is null)
-    imDX = new C_imgMatrix<double>(image1->getNbRow(), image1->getNbColumn());
-    *imDX = 0.0;
+    imDT = new C_imgMatrix<double>(image1->getNbRow(), image1->getNbColumn());
+    *imDT = 0.0;
     for(unsigned short i=0 ; i<image1->getNbRow()-1 ; i++)
     {
-        for(unsigned short j=0 ; j<image1->getNbRow()-1 ; j++)
+        for(unsigned short j=0 ; j<image1->getNbColumn()-1 ; j++)
         {
-            (*imDX)(i,j) = 0.25*((*image2)(i,j)-(*image1)(i,j) + (*image2)(i+1,j)-(*image1)(i+1,j) + \
+            (*imDT)(i,j) = 0.25*((*image2)(i,j)-(*image1)(i,j) + (*image2)(i+1,j)-(*image1)(i+1,j) + \
                     (*image2)(i,j+1)-(*image1)(i,j+1) + (*image2)(i+1,j+1)-(*image1)(i+1,j+1));
         }
     }
@@ -150,11 +150,48 @@ void C_motionEstimation::computeAverages(void)
     vectYMean = new C_imgMatrix<double>(image1->getNbRow(), image1->getNbColumn());
     for(unsigned short i=0 ; i<image1->getNbRow() ; i++)
     {
-        for(unsigned short j=0 ; j<image1->getNbRow() ; j++)
+        for(unsigned short j=0 ; j<image1->getNbColumn() ; j++)
         {
             (*vectXMean)(i,j) = computeAverageX(i,j);
             (*vectYMean)(i,j) = computeAverageY(i,j);
         }
     }
     return;
+}
+
+
+void C_motionEstimation::computeIteration(double alpha)
+{
+    //update average vector field
+    computeAverages();
+
+    //update vector field
+    for(unsigned short i=0 ; i<image1->getNbRow() ; i++)
+    {
+        for(unsigned short j=0 ; j<image1->getNbColumn() ; j++)
+        {
+            (*vectX)(i,j) = (*vectXMean)(i,j) - (*imDX)(i,j)*( (*imDX)(i,j)*(*vectXMean)(i,j) + (*imDY)(i,j)*(*vectYMean)(i,j) + (*imDT)(i,j))/(SQR(alpha) + SQR((*imDX)(i,j)) + SQR((*imDY)(i,j)));
+            (*vectY)(i,j) = (*vectYMean)(i,j) - (*imDY)(i,j)*( (*imDX)(i,j)*(*vectXMean)(i,j) + (*imDY)(i,j)*(*vectYMean)(i,j) + (*imDT)(i,j))/(SQR(alpha) + SQR((*imDX)(i,j)) + SQR((*imDY)(i,j)));
+        }
+    }
+    return;
+}
+
+bool C_motionEstimation::initOpticalFlow(unsigned short METHOD)
+{
+    (*vectX) = 0.0;
+    (*vectY) = 0.0;
+
+    derivativeX();
+    derivativeY();
+    derivativeT();
+    return true;
+}
+
+bool C_motionEstimation::computeMotionField(double alpha, unsigned long nbIteration)
+{
+    initOpticalFlow(0);
+    for(unsigned long i=0 ; i<nbIteration ; i++)
+        computeIteration(alpha);
+    return true;
 }
