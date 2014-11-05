@@ -19,6 +19,11 @@ public:
 
     void display(unsigned short NORMALIZATION);
 
+    C_imgMatrix& operator= (C_imgMatrix const& c);
+    C_imgMatrix& operator= (C_matrix<dataType> const& c);
+    C_imgMatrix& operator= (dataType const& x);
+
+
 };
 
 
@@ -59,6 +64,48 @@ template<class dataType> C_imgMatrix<dataType>::~C_imgMatrix()
 {
 }
 
+
+template<class dataType> C_imgMatrix<dataType>& C_imgMatrix<dataType>::operator= (C_imgMatrix const& c)
+{
+    if(this==&c) return *this;
+    if(c.getNbColumn()!=this->getNbColumn() || c.getNbRow()!=this->getNbRow()) throw "dimension matrix must agree";
+
+    for(unsigned short i=0 ; i<this->m_L ; i++)
+    {
+        for(unsigned short j=0 ; j<this->m_C ; j++)
+        {
+            this->m_A[i][j] = c(i,j);
+        }
+    }
+    return *this;
+}
+
+template<class dataType> C_imgMatrix<dataType>& C_imgMatrix<dataType>::operator= (C_matrix<dataType> const& c)
+{
+    if(this==&c) return *this;
+    if(c.getNbColumn()!=this->getNbColumn() || c.getNbRow()!=this->getNbRow()) throw "dimension matrix must agree";
+
+    for(unsigned short i=0 ; i<this->m_L ; i++)
+    {
+        for(unsigned short j=0 ; j<this->m_C ; j++)
+        {
+            this->m_A[i][j] = c(i,j);
+        }
+    }
+    return *this;
+}
+
+template<class dataType> C_imgMatrix<dataType>& C_imgMatrix<dataType>::operator= (dataType const& x)
+{
+    for(unsigned short i=0 ; i<this->m_L ; i++)
+    {
+        for(unsigned short j=0 ; j<this->m_C ; j++)
+        {
+            this->m_A[i][j] = x;
+        }
+    }
+    return *this;
+}
 
 template<class dataType> void C_imgMatrix<dataType>::display(unsigned short NORMALIZATION)
 {

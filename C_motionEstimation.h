@@ -33,7 +33,7 @@ private:
     C_imgMatrix<double>* imDT;
 
     //methods that compute the derivatives
-    C_imgMatrix<double>* derivativeX(C_imgMatrix<double>* im){return NULL;}
+    void derivativeX(void);
     C_imgMatrix<double>* derivativeY(C_imgMatrix<double>* im){return NULL;}
     C_imgMatrix<double>* derivativeT(C_imgMatrix<double>* imT, C_imgMatrix<double>* imTDT){return NULL;}
 
